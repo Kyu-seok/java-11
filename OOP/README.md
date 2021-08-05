@@ -3,7 +3,7 @@
 ###### 4 principles of OOP
 - [x] Encapsulation
 - [x] Abstraction
-- [ ] Inheritence
+- [x] Inheritence
 - [x] Polymorphism
 
 OOP is a programming model that organizes program with data and object instead of functions and logics. Object in OOP should be viewd as collection of methods and variables. By using OOP design, a single block of source code is devided with smaller parts of object which brings great advantage on productivity.
