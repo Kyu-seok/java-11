@@ -1,4 +1,4 @@
-package com.yeumkyuseok.userGenericClass;
+package com.yeumkyuseok.example;
 
 import java.util.ArrayList;
 
