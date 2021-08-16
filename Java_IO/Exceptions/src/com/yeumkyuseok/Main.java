@@ -1,11 +1,12 @@
 package com.yeumkyuseok;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        int x = getIntLBYL();
+        int x = getIntEAFP();
         System.out.println("x is " + x);
     }
 
@@ -29,6 +30,16 @@ public class Main {
             return Integer.parseInt(input);
         }
         return 0;
+    }
+
+    private static int getIntEAFP() {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Please enter an integer ");
+        try {
+            return s.nextInt();
+        } catch (InputMismatchException e) {
+            return 0;
+        }
     }
 
     private static int divideLBYL(int x, int y) {
