@@ -1,4 +1,4 @@
-package com.yeumkyuseok;
+package com.yeumkyuseok.exceptions;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
