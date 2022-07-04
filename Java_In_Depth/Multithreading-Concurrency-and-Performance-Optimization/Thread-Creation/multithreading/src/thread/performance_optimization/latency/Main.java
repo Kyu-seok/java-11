@@ -1,4 +1,4 @@
-package thread.performance_optimization;
+package thread.performance_optimization.latency;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
