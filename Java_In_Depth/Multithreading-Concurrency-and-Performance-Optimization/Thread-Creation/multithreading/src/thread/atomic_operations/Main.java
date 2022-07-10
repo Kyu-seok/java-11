@@ -4,9 +4,9 @@ public class Main {
 
     public static class Metrics {
         private long count = 0;
-        private double average = 0.0;
+        private volatile double average = 0.0;
 
-        public void addSample(long sample) {
+        public synchronized void addSample(long sample) {
             double currentSum = average * count;
             count++;
             average = (currentSum + sample) / count;
