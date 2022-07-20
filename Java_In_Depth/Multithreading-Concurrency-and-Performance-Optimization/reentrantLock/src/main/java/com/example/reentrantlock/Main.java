@@ -30,7 +30,62 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) {
+        primaryStage.setTitle("Cryptocurrency Prices");
 
+        GridPane grid = createGrid();
+        Map<String, Label> cryptoLabels = createCryptoPriceLabels();
+
+        addLabelsToGrid(cryptoLabels, grid);
+
+        double width = 300;
+        double height = 250;
+
+        StackPane root = new StackPane();
+
+        Rectangle background = createBackgroundRectangleWithAnimation(width, height);
+
+        root.getChildren().add(background);
+        root.getChildren().add(grid);
+
+        primaryStage.setScene(new Scene(root, width, height));
+
+        PricesContainer pricesContainer = new PricesContainer();
+
+        PriceUpdater priceUpdater = new PriceUpdater(pricesContainer);
+
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (pricesContainer.getLockObject().tryLock()) {
+                    try {
+                        Label bitcoinLabel = cryptoLabels.get("BTC");
+                        bitcoinLabel.setText(String.valueOf(pricesContainer.getBitcoinPrice()));
+
+                        Label etherLabel = cryptoLabels.get("ETH");
+                        etherLabel.setText(String.valueOf(pricesContainer.getEtherPrice()));
+
+                        Label litecoinLabel = cryptoLabels.get("LTC");
+                        litecoinLabel.setText(String.valueOf(pricesContainer.getLitecoinPrice()));
+
+                        Label bitcoinCashLabel = cryptoLabels.get("BCH");
+                        bitcoinCashLabel.setText(String.valueOf(pricesContainer.getBitcoinCashPrice()));
+
+                        Label rippleLabel = cryptoLabels.get("XRP");
+                        rippleLabel.setText(String.valueOf(pricesContainer.getRipplePrice()));
+                    } finally {
+                        pricesContainer.getLockObject().unlock();
+                    }
+                }
+            }
+        };
+
+        addWindowResizeListener(primaryStage, background);
+
+        animationTimer.start();
+
+        priceUpdater.start();
+
+        primaryStage.show();
     }
 
     private void addWindowResizeListener(Stage stage, Rectangle background) {
