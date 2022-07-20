@@ -33,5 +33,14 @@ public class Main {
             return sum;
         }
 
+        public void addItem(int price) {
+            Integer numberOfItemsForPrice = priceToCountMap.get(price);
+            if (numberOfItemsForPrice == null) {
+                priceToCountMap.put(price, 1);
+            } else {
+                priceToCountMap.put(price, numberOfItemsForPrice + 1);
+            }
+        }
+
     }
 }
