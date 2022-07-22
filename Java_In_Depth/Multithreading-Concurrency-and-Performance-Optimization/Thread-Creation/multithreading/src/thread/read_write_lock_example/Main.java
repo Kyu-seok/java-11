@@ -42,5 +42,13 @@ public class Main {
             }
         }
 
+        public void removeItem(int price) {
+            Integer numberOfItemsForPrice = priceToCountMap.get(price);
+            if (numberOfItemsForPrice == null || numberOfItemsForPrice == 1) {
+                priceToCountMap.remove(price);
+            } else {
+                priceToCountMap.put(price, numberOfItemsForPrice - 1);
+            }
+        }
     }
 }
