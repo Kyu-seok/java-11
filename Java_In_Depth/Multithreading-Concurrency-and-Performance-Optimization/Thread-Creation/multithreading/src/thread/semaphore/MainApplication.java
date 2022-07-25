@@ -10,6 +10,7 @@ public class MainApplication {
 
     }
 
+
     private static class ThreadSafeQueue {
         private Queue<MatricesPair> queue = new LinkedList<>();
         private boolean isEmpty = true;
@@ -44,7 +45,8 @@ public class MainApplication {
         }
 
         public synchronized void terminate() {
-
+            isTerminate = true;
+            notifyAll();
         }
     }
 
