@@ -1,10 +1,13 @@
 package thread.semaphore;
 
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.StringJoiner;
 
 public class MainApplication {
 
@@ -12,6 +15,51 @@ public class MainApplication {
 
     public static void main(String[] args) {
 
+    }
+
+    private static class MatricesMultiplierConsumer extends Thread {
+        private ThreadSafeQueue queue;
+        private FileWriter fileWriter;
+
+        public MatricesMultiplierConsumer(FileWriter fileWriter, ThreadSafeQueue queue) {
+            this.fileWriter = fileWriter;
+            this.queue = queue;
+        }
+
+        private static void saveMatrixToFile(FileWriter fileWriter, float[][] matrix) throws IOException {
+            for (int r = 0; r < N; r++) {
+                StringJoiner stringJoiner = new StringJoiner(",");
+                for (int c = 0; c < N; c++) {
+                    stringJoiner.add(String.format("%.2f", matrix[r][c]));
+                }
+                fileWriter.write(stringJoiner.toString());
+                fileWriter.write("\n");
+            }
+            fileWriter.write("\n");
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                MatricesPair matricesPair = queue.remove();
+                if (matricesPair == null) {
+                    System.out.println("No more matrices to read from the queue, consumer is terminating");
+                    break;
+                }
+
+                float[][] result = multiplyMatrices(matricesPair.matrix1, matricesPair.matrix2);
+
+                saveMatrixToFile(fileWriter, result);
+            }
+
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private static class MatricesReaderProducer extends Thread {
