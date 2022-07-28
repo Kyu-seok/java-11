@@ -49,7 +49,11 @@ public class MainApplication {
 
                 float[][] result = multiplyMatrices(matricesPair.matrix1, matricesPair.matrix2);
 
-                saveMatrixToFile(fileWriter, result);
+                try {
+                    saveMatrixToFile(fileWriter, result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             try {
@@ -59,6 +63,18 @@ public class MainApplication {
                 e.printStackTrace();
             }
 
+        }
+
+        private float[][] multiplyMatrices(float[][] m1, float[][] m2) {
+            float[][] result = new float[N][N];
+            for (int r = 0; r < N; r++) {
+                for (int c = 0; c < N; c++) {
+                    for (int k = 0; k < N; k++) {
+                        result[r][c] += m1[r][k] * m2[k][c];
+                    }
+                }
+            }
+            return result;
         }
     }
 
