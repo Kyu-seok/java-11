@@ -1,8 +1,6 @@
 package thread.semaphore;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,10 +9,20 @@ import java.util.StringJoiner;
 
 public class MainApplication {
 
+    public static final String INPUT_FILE = "./out/matrices";
+    public static final String OUTPUT_FILE = "./out/matrices_results.txt";
     private static final int N = 10;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        ThreadSafeQueue threadSafeQueue = new ThreadSafeQueue();
+        File inputFile = new File(INPUT_FILE);
+        File outputFile = new File(OUTPUT_FILE);
 
+        MatricesReaderProducer matricesReader = new MatricesReaderProducer(new FileReader(inputFile), threadSafeQueue);
+        MatricesMultiplierConsumer matricesConsumer = new MatricesMultiplierConsumer(new FileWriter(outputFile), threadSafeQueue);
+
+        matricesConsumer.start();
+        matricesReader.start();
     }
 
     private static class MatricesMultiplierConsumer extends Thread {
